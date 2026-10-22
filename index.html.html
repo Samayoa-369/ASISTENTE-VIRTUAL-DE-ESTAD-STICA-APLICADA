@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asistente virtual de estadística | Física II</title>
+<style>
+:root{--navy:#080B14;--teal:#176BFF;--paper:#080B12;--ink:#F1F5FF;--muted:#A7B3CC;--line:#263653;--white:#111827}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:linear-gradient(120deg,#102B4E,#1769AA);color:#fff;padding:28px 18px}
+.wrap{max-width:1100px;margin:auto}header .brand{display:flex;gap:15px;align-items:center} .logo{width:58px;height:58px;border-radius:16px;background:#ffffff1c;display:grid;place-items:center;font-size:29px}
+h1{font-size:clamp(1.8rem,4vw,2.7rem);line-height:1.1;margin:0}header p{margin:8px 0 0;color:#dcebf2}.identity{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}.identity label{font-size:.85rem;color:#dcebf2}.identity input{width:100%;margin-top:4px;background:#ffffff12;border:1px solid #ffffff50;color:white;border-radius:8px;padding:10px}.identity input::placeholder{color:#dcebf2}
+main{padding:22px 16px 50px}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}.tab{border:1px solid var(--line);border-radius:10px;padding:10px 14px;background:white;cursor:pointer;font-weight:650;color:var(--ink)}.tab.active{background:var(--navy);color:white;border-color:var(--navy)}
+.panel{background:white;border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:16px;box-shadow:0 4px 18px #18334a08}.panel h2{margin:0 0 8px;font-size:1.3rem}.hint{color:var(--muted);margin-top:0}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field{display:flex;flex-direction:column;gap:6px}.field label{font-weight:650;font-size:.94rem}.field input,.field select,.field textarea{width:100%;border:1px solid #bdcad8;border-radius:9px;padding:11px;font:inherit;background:#fff;color:var(--ink)}textarea{min-height:92px;resize:vertical}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}.btn{border:0;border-radius:9px;padding:11px 16px;font:inherit;font-weight:700;cursor:pointer;background:var(--teal);color:white}.btn.secondary{background:#e8eef5;color:var(--navy)}.btn:focus,.tab:focus{outline:3px solid #72c8c1;outline-offset:2px}.result{margin-top:18px;border:1px solid #b7e1da;background:#f0fbf8;border-radius:12px;padding:16px;overflow-wrap:anywhere}.result h3{margin:0 0 8px}.result ol{padding-left:22px}.error{background:#fff5f3;border-color:#efb7ae}.result table{border-collapse:collapse;width:100%;margin:8px 0}.result th,.result td{border:1px solid #d2ddd9;padding:7px;text-align:left}.small{font-size:.9rem;color:var(--muted)}.examples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.example{border:1px solid var(--line);padding:13px;border-radius:11px}.example h3{font-size:1rem;margin:0 0 5px}.example p{font-size:.9rem;color:var(--muted);margin:0 0 9px}.example button{padding:7px 10px}.hidden{display:none!important}.practice-question{font-size:1.1rem;font-weight:700}.feedback{margin-top:12px;padding:12px;border-radius:10px}.good{background:#e7f8ee;color:#14532d}.bad{background:#fff4e5;color:#854d0e}footer{text-align:center;color:var(--muted);padding:0 16px 28px;font-size:.9rem}
+@media(max-width:700px){.identity,.grid,.examples{grid-template-columns:1fr}.panel{padding:16px}.tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.tab{padding:9px 7px}}
+
+/* Rediseño creativo: negro + azul eléctrico */
+body{background:radial-gradient(ellipse at 12% 0%,#10234a 0,transparent 36%),radial-gradient(ellipse at 95% 18%,#071e43 0,transparent 32%),var(--paper);color:var(--ink)}
+header{background:linear-gradient(125deg,#05070d 0%,#0a1530 48%,#064bd8 100%);border-bottom:1px solid #2476ff;box-shadow:0 12px 36px #0057ff25;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;width:250px;height:250px;border:1px solid #4c8dff45;border-radius:50%;right:-70px;top:-130px;box-shadow:0 0 0 28px #4c8dff0d,0 0 0 58px #4c8dff0a;pointer-events:none}
+.logo{width:76px;height:76px;flex:0 0 76px;border-radius:50%;background:#fff;border:2px solid #4b9aff;box-shadow:0 0 24px #1674ff70;overflow:hidden;display:grid;place-items:center}.logo img{display:block;width:100%;height:100%;object-fit:contain}
+h1{letter-spacing:-.04em;text-shadow:0 0 24px #3584ff55}
+header p{color:#d7e5ff}.identity label{color:#c4d7ff}.identity input{background:#071020b8;border-color:#4269a8;color:#fff}.identity input:focus{outline:2px solid #3d8bff;outline-offset:1px}
+main{padding-top:28px}.tabs{gap:10px}.tab{background:#111827;color:#dce8ff;border-color:#263a5e;box-shadow:0 3px 12px #00000018;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}.tab:hover{border-color:#3985ff;transform:translateY(-1px)}.tab.active{background:linear-gradient(120deg,#0752df,#1688ff);border-color:#4297ff;box-shadow:0 0 20px #086bff40;color:white}
+.panel{background:linear-gradient(145deg,#121a2a,#0e1421);border:1px solid #253959;border-radius:18px;box-shadow:0 12px 32px #00000030;position:relative;overflow:hidden}.panel:before{content:"";position:absolute;left:0;top:0;width:4px;height:48px;background:linear-gradient(#48a0ff,#145bff);border-radius:0 0 5px 0}.panel h2{color:#f5f8ff}.hint,.small,footer{color:var(--muted)}
+.field label{color:#d9e5ff}.field input,.field select,.field textarea{background:#090f1b;border-color:#304465;color:#f4f7ff}.field input::placeholder,.field textarea::placeholder{color:#7788a8}.field input:focus,.field select:focus,.field textarea:focus{outline:2px solid #277cff;outline-offset:1px;border-color:#398bff}
+.btn{background:linear-gradient(120deg,#0755e8,#1688ff);box-shadow:0 5px 15px #075dff30;transition:transform .15s ease,box-shadow .15s ease}.btn:hover{transform:translateY(-1px);box-shadow:0 8px 22px #075dff55}.btn.secondary{background:#1b2940;border:1px solid #344d75;color:#dbe8ff;box-shadow:none}.btn:focus,.tab:focus{outline:3px solid #61a6ff;outline-offset:2px}
+.example{background:#0b1220;border-color:#2a3d5e}.example h3{color:#edf4ff}.example p{color:#aab8d0}.example button{box-shadow:none}
+.result{background:#0b2a26;border-color:#187b70;color:#e5fff8}.result h3{color:#e7fff9}.result table{color:#e5fff8}.result th,.result td{border-color:#28645d}.error{background:#351a20;border-color:#a94d5a;color:#ffe8eb}.good{background:#123426;color:#c9ffe0}.bad{background:#382710;color:#ffedc2}
+footer{padding-top:4px}
+@media(max-width:700px){header{padding:24px 16px}.panel{box-shadow:0 8px 22px #00000025}.identity input{font-size:16px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+
+</style>
+</head>
+<body>
+<header><div class="wrap">
+ <div class="brand"><div class="logo"><img src="logo-marianogalvez.jpg" alt="Logotipo de Universidad Mariano Gálvez de Guatemala"></div><div><h1>Asistente virtual de estadística</h1><p>Comprende los datos, descubre respuestas</p></div></div>
+ <p>Ingresa datos nuevos, revisa el procedimiento y aprende a interpretar los resultados.</p>
+ <div class="identity">
+  <div><label for="student1">Integrante 1</label><input id="student1" value="Alex Fernando Salvador" placeholder="Nombre completo"></div>
+  <div><label for="student2">Integrante 2</label><input id="student2" value="Heissel Ivania Lopéz" placeholder="Nombre completo"></div>
+  <div><label for="section">Sección</label><input id="section" value="A" placeholder="Sección"></div>
+ </div>
+ <p class="small" style="color:#dcebf2">Asignatura: Física II · Institución: Mariano Galvez</p>
+</div></header>
+<main class="wrap">
+<nav class="tabs" aria-label="Módulos">
+ <button class="tab active" data-tab="desc">Descriptiva</button><button class="tab" data-tab="freq">Frecuencias</button><button class="tab" data-tab="prob">Probabilidad</button><button class="tab" data-tab="reg">Correlación y regresión</button><button class="tab" data-tab="practice">Practicar</button><button class="tab" data-tab="examples">10 ejemplos</button>
+</nav>
+<section id="desc" class="module">
+ <div class="panel"><h2>Estadística descriptiva</h2><p class="hint">Escribe números separados por comas o espacios. Ejemplo: 2.1, 2.3, 2.2, 2.4, 2.0</p>
+  <div class="field"><label for="data">Datos numéricos</label><textarea id="data" placeholder="Ej. 2.1, 2.3, 2.2, 2.4, 2.0">2.1, 2.3, 2.2, 2.4, 2.0</textarea></div>
+  <div class="grid" style="margin-top:12px"><div class="field"><label for="unit">Unidad (opcional)</label><input id="unit" placeholder="A, cm, kg, segundos..."></div><div class="field"><label for="kind">Tipo de desviación</label><select id="kind"><option value="sample">Muestral (n − 1)</option><option value="population">Poblacional (N)</option></select></div></div>
+  <div class="actions"><button class="btn" id="calcDesc">Calcular estadísticas</button><button class="btn secondary" id="clearDesc">Limpiar</button></div><div id="descResult" aria-live="polite"></div>
+ </div>
+</section>
+<section id="freq" class="module hidden">
+ <div class="panel"><h2>Tabla de frecuencias</h2><p class="hint">Útil para datos discretos o mediciones repetidas. Cuenta cada valor y calcula su frecuencia relativa.</p>
+  <div class="field"><label for="freqData">Datos numéricos</label><textarea id="freqData" placeholder="Ej. 1, 2, 2, 3, 3, 3">1, 2, 2, 3, 3, 3</textarea></div>
+  <div class="actions"><button class="btn" id="calcFreq">Crear tabla</button></div><div id="freqResult" aria-live="polite"></div>
+ </div>
+</section>
+<section id="prob" class="module">
+ <div class="panel"><h2>Probabilidad y distribución normal</h2><p class="hint">Para distribución normal se calcula P(X ≤ x), usando la media y la desviación estándar poblacional de la distribución.</p>
+ <div class="grid"><div class="field"><label for="probType">Tipo de cálculo</label><select id="probType"><option value="basic">Probabilidad básica: casos favorables / posibles</option><option value="normal">Normal acumulada: P(X ≤ x)</option></select></div><div class="field"><label for="favorable">Casos favorables</label><input id="favorable" type="number" min="0" step="any" value="3"></div><div class="field"><label for="possible">Casos posibles</label><input id="possible" type="number" min="1" step="any" value="6"></div><div class="field"><label for="xvalue">Valor x (normal)</label><input id="xvalue" type="number" step="any" value="70"></div><div class="field"><label for="mean">Media μ (normal)</label><input id="mean" type="number" step="any" value="60"></div><div class="field"><label for="sd">Desviación estándar σ (normal)</label><input id="sd" type="number" min="0" step="any" value="10"></div></div>
+ <div class="actions"><button class="btn" id="calcProb">Calcular probabilidad</button></div><div id="probResult" aria-live="polite"></div>
+ </div>
+</section>
+<section id="reg" class="module">
+ <div class="panel"><h2>Correlación y regresión lineal simple</h2><p class="hint">Ingresa pares x,y en el mismo orden y separados por comas. Ambos conjuntos deben tener la misma cantidad de valores (mínimo 2).</p>
+ <div class="grid"><div class="field"><label for="xdata">Variable X</label><textarea id="xdata">1, 2, 3, 4, 5</textarea></div><div class="field"><label for="ydata">Variable Y</label><textarea id="ydata">2, 3, 5, 4, 6</textarea></div></div>
+ <div class="actions"><button class="btn" id="calcReg">Calcular correlación y regresión</button></div><div id="regResult" aria-live="polite"></div>
+ </div>
+</section>
+<section id="practice" class="module hidden">
+ <div class="panel"><h2>Práctica con retroalimentación</h2><p class="hint">Genera un ejercicio nuevo de media, mediana, rango o probabilidad básica. Responde y recibe corrección con explicación.</p>
+ <div class="actions"><button class="btn" id="newPractice">Generar ejercicio</button></div><div id="practiceArea" aria-live="polite"></div>
+ </div>
+</section>
+<section id="examples" class="module hidden">
+ <div class="panel"><h2>10 ejercicios de ejemplo</h2><p class="hint">Pulsa “Probar” para cargar los datos en el módulo correspondiente y calcularlos.</p><div id="exampleList" class="examples"></div></div>
+</section>
+</main>
+<footer>Estadística IA · Mariano Galvez · Física II · Herramienta educativa.<br><strong>Ingeniero a calificar este proyecto: Reyes Baltazar</strong></footer>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+function parseNumbers(raw){
+ const cleaned=raw.trim();
+ if(!cleaned) throw new Error('Ingresa al menos un dato numérico.');
+ const parts=cleaned.split(/[,\s;]+/).filter(Boolean);
+ const values=parts.map(p=>Number(p));
+ if(values.some(v=>!Number.isFinite(v))) throw new Error('Hay valores que no son números. Separa los datos con comas o espacios y usa punto para decimales.');
+ if(values.length===0) throw new Error('Ingresa al menos un dato.');
+ return values;
+}
+function fmt(n,d=4){if(!Number.isFinite(n))return 'no definido';return Number(n.toFixed(d)).toString();}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function showResult(id,html,error=false){$(id).innerHTML=`<div class="result ${error?'error':''}">${html}</div>`;}
+function showError(id,e){showResult(id,`<h3>Revisa los datos</h3><p>${esc(e.message||String(e))}</p>`,true);}
+function median(sorted){const m=Math.floor(sorted.length/2);return sorted.length%2?sorted[m]:(sorted[m-1]+sorted[m])/2;}
+function modeInfo(a){const counts=new Map();a.forEach(v=>counts.set(v,(counts.get(v)||0)+1));const max=Math.max(...counts.values());if(max===1)return 'No hay moda: todos los valores aparecen una sola vez.';return [...counts].filter(([v,c])=>c===max).map(([v])=>fmt(v)).join(', ')+` (frecuencia ${max})`;}
+function descriptive(a,type){
+ const n=a.length, sum=a.reduce((s,v)=>s+v,0), mean=sum/n, sorted=[...a].sort((x,y)=>x-y), med=median(sorted), range=sorted[n-1]-sorted[0];
+ const denom=type==='sample'?n-1:n;
+ const variance=denom>0?a.reduce((s,v)=>s+(v-mean)**2,0)/denom:NaN;
+ return {n,sum,mean,sorted,med,range,variance,sd:Math.sqrt(variance),min:sorted[0],max:sorted[n-1]};
+}
+$('calcDesc').addEventListener('click',()=>{
+ try{
+  const a=parseNumbers($('data').value), type=$('kind').value, unit=$('unit').value.trim(), r=descriptive(a,type), u=unit?` ${esc(unit)}`:'';
+  const typeLabel=type==='sample'?'muestral':'poblacional';
+  const steps=`<ol><li>Datos ordenados: ${r.sorted.map(v=>fmt(v)).join(', ')}.</li><li>Media: x̄ = Σx / n = ${fmt(r.sum)} / ${r.n} = <b>${fmt(r.mean)}${u}</b>.</li><li>Mediana: valor central de los datos ordenados = <b>${fmt(r.med)}${u}</b>.</li><li>Rango: máximo − mínimo = ${fmt(r.max)} − ${fmt(r.min)} = <b>${fmt(r.range)}${u}</b>.</li><li>Varianza ${typeLabel}: suma de cuadrados de las diferencias respecto a la media dividida entre ${type==='sample'?'n − 1':'N'} = <b>${fmt(r.variance)}${unit?' '+esc(unit)+'²':''}</b>.</li><li>Desviación estándar ${typeLabel}: raíz cuadrada de la varianza = <b>${fmt(r.sd)}${u}</b>.</li></ol>`;
+  showResult('descResult',`<h3>Resultados</h3><p><b>n:</b> ${r.n} · <b>Media:</b> ${fmt(r.mean)}${u} · <b>Mediana:</b> ${fmt(r.med)}${u} · <b>Moda:</b> ${modeInfo(a)} · <b>Rango:</b> ${fmt(r.range)}${u}</p><p><b>Varianza ${typeLabel}:</b> ${fmt(r.variance)}${unit?' '+esc(unit)+'²':''}<br><b>Desviación estándar ${typeLabel}:</b> ${fmt(r.sd)}${u}</p><h3>Procedimiento</h3>${steps}<p><b>Interpretación:</b> la media representa el promedio. La desviación estándar describe cuánto se dispersan los datos alrededor de la media, en las mismas unidades. ${type==='sample'?'Se usa n − 1 porque los datos se tratan como una muestra.':'Se divide entre N porque los datos representan toda la población analizada.'}</p>`);
+ }catch(e){showError('descResult',e);}
+});
+$('clearDesc').addEventListener('click',()=>{$('data').value='';$('unit').value='';$('descResult').innerHTML='';});
+$('calcFreq').addEventListener('click',()=>{
+ try{const a=parseNumbers($('freqData').value), counts=new Map();a.forEach(v=>counts.set(v,(counts.get(v)||0)+1));const entries=[...counts].sort((x,y)=>x[0]-y[0]);let cum=0;let rows=entries.map(([v,f])=>{cum+=f;return `<tr><td>${fmt(v)}</td><td>${f}</td><td>${fmt(f/a.length,4)}</td><td>${cum}</td></tr>`}).join('');
+ showResult('freqResult',`<h3>Tabla de frecuencias (n = ${a.length})</h3><table><thead><tr><th>Valor</th><th>Frecuencia f</th><th>Frecuencia relativa</th><th>Frecuencia acumulada</th></tr></thead><tbody>${rows}</tbody></table><p>Comprobación: las frecuencias absolutas suman ${a.length}; las frecuencias relativas suman 1 (100 %), salvo redondeo.</p><p class="small">Para datos continuos con muchos valores diferentes, agrúpalos en intervalos antes de interpretar una tabla de frecuencias.</p>`);
+ }catch(e){showError('freqResult',e);}
+});
+function erf(x){const sign=x<0?-1:1;x=Math.abs(x);const t=1/(1+0.3275911*x);const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);return sign*y;}
+function normalCDF(z){return 0.5*(1+erf(z/Math.sqrt(2)));}
+$('probType').addEventListener('change',()=>{const basic=$('probType').value==='basic';['favorable','possible'].forEach(id=>$(id).parentElement.classList.toggle('hidden',!basic));['xvalue','mean','sd'].forEach(id=>$(id).parentElement.classList.toggle('hidden',basic));});
+$('calcProb').addEventListener('click',()=>{
+ try{if($('probType').value==='basic'){
+ const f=Number($('favorable').value),p=Number($('possible').value);if(!Number.isFinite(f)||!Number.isFinite(p)||p<=0||f<0||f>p)throw new Error('Usa casos posibles mayores que cero y casos favorables entre 0 y los casos posibles.');
+ const prob=f/p;showResult('probResult',`<h3>Resultado</h3><p>P(A) = casos favorables / casos posibles = ${fmt(f)} / ${fmt(p)} = <b>${fmt(prob)} (${fmt(prob*100,2)} %)</b>.</p><p>Interpretación: bajo el supuesto de resultados igualmente probables, la probabilidad del evento es ${fmt(prob*100,2)} %.</p>`);
+ }else{const x=Number($('xvalue').value),mu=Number($('mean').value),sd=Number($('sd').value);if(![x,mu,sd].every(Number.isFinite)||sd<=0)throw new Error('Ingresa números válidos y una desviación estándar σ mayor que cero.');
+ const z=(x-mu)/sd,p=normalCDF(z);showResult('probResult',`<h3>Resultado de la normal</h3><p>Estandarización: z = (x − μ) / σ = (${fmt(x)} − ${fmt(mu)}) / ${fmt(sd)} = <b>${fmt(z)}</b>.</p><p>P(X ≤ ${fmt(x)}) ≈ Φ(${fmt(z)}) = <b>${fmt(p,5)} (${fmt(p*100,2)} %)</b>.</p><p>Interpretación: aproximadamente ${fmt(p*100,2)} % de los valores de una distribución normal con media ${fmt(mu)} y desviación estándar ${fmt(sd)} se encuentran en o por debajo de ${fmt(x)}. Es una aproximación numérica.</p>`);}
+ }catch(e){showError('probResult',e);}
+});
+$('calcReg').addEventListener('click',()=>{
+ try{const x=parseNumbers($('xdata').value),y=parseNumbers($('ydata').value);if(x.length!==y.length)throw new Error('X e Y deben tener la misma cantidad de valores.');if(x.length<2)throw new Error('Se necesitan al menos dos pares de datos.');
+ const n=x.length,mx=x.reduce((s,v)=>s+v,0)/n,my=y.reduce((s,v)=>s+v,0)/n;
+ const sxx=x.reduce((s,v)=>s+(v-mx)**2,0),syy=y.reduce((s,v)=>s+(v-my)**2,0),sxy=x.reduce((s,v,i)=>s+(v-mx)*(y[i]-my),0);
+ if(sxx===0||syy===0)throw new Error('No se puede calcular la correlación si X o Y no varía. La regresión requiere variación en X.');
+ const b=sxy/sxx,a=my-b*mx,r=sxy/Math.sqrt(sxx*syy),r2=r*r;
+ let strength=Math.abs(r)<.2?'muy débil o casi nula':Math.abs(r)<.4?'débil':Math.abs(r)<.6?'moderada':Math.abs(r)<.8?'fuerte':'muy fuerte';
+ showResult('regResult',`<h3>Resultados</h3><p><b>Correlación de Pearson r:</b> ${fmt(r)}<br><b>Coeficiente de determinación R²:</b> ${fmt(r2)} (${fmt(r2*100,2)} %)<br><b>Recta de regresión:</b> ŷ = ${fmt(a)} ${b<0?'−':'+'} ${fmt(Math.abs(b))}x</p><h3>Procedimiento</h3><ol><li>Media de X: ${fmt(mx)}; media de Y: ${fmt(my)}.</li><li>Pendiente: b = Σ(x − x̄)(y − ȳ) / Σ(x − x̄)² = ${fmt(sxy)} / ${fmt(sxx)} = ${fmt(b)}.</li><li>Intercepto: a = ȳ − bx̄ = ${fmt(my)} − (${fmt(b)} × ${fmt(mx)}) = ${fmt(a)}.</li><li>Correlación: r = Σ(x − x̄)(y − ȳ) / √[Σ(x − x̄)² Σ(y − ȳ)²] = ${fmt(r)}.</li></ol><p><b>Interpretación:</b> la relación lineal es ${strength} y ${r>=0?'positiva':'negativa'}. R² indica qué proporción de la variación observada de Y queda explicada por el modelo lineal en estos datos. Correlación no demuestra causalidad.</p>`);
+ }catch(e){showError('regResult',e);}
+});
+const examples=[
+ {title:'1. Mediciones de corriente',desc:'Media y desviación estándar muestral de 2.1, 2.3, 2.2, 2.4 y 2.0 A.',tab:'desc',data:'2.1, 2.3, 2.2, 2.4, 2.0',unit:'A',kind:'sample'},
+ {title:'2. Calificaciones',desc:'Media, mediana, moda y rango de 70, 80, 80, 90, 100.',tab:'desc',data:'70, 80, 80, 90, 100',unit:'puntos',kind:'population'},
+ {title:'3. Tiempos',desc:'Analiza 12, 15, 11, 14 y 13 segundos.',tab:'desc',data:'12, 15, 11, 14, 13',unit:'s',kind:'sample'},
+ {title:'4. Frecuencias',desc:'Construye tabla para 1, 2, 2, 3, 3, 3, 4.',tab:'freq',data:'1, 2, 2, 3, 3, 3, 4'},
+ {title:'5. Dado',desc:'Probabilidad de obtener un número par en un dado justo.',tab:'prob',type:'basic',f:3,p:6},
+ {title:'6. Distribución normal',desc:'Calcula P(X ≤ 70) si μ = 60 y σ = 10.',tab:'prob',type:'normal',x:70,mean:60,sd:10},
+ {title:'7. Alturas',desc:'Analiza 150, 155, 160, 165 y 170 cm.',tab:'desc',data:'150, 155, 160, 165, 170',unit:'cm',kind:'sample'},
+ {title:'8. Correlación',desc:'Relaciona X = 1,2,3,4,5 con Y = 2,3,5,4,6.',tab:'reg',x:'1, 2, 3, 4, 5',y:'2, 3, 5, 4, 6'},
+ {title:'9. Ventas',desc:'Analiza 4, 6, 6, 8, 10 unidades vendidas.',tab:'desc',data:'4, 6, 6, 8, 10',unit:'unidades',kind:'sample'},
+ {title:'10. Probabilidad de selección',desc:'De 20 piezas, 5 son defectuosas. Probabilidad de elegir una defectuosa al azar.',tab:'prob',type:'basic',f:5,p:20}
+];
+function switchTab(tab){document.querySelectorAll('.module').forEach(el=>el.classList.toggle('hidden',el.id!==tab));document.querySelectorAll('.tab').forEach(el=>el.classList.toggle('active',el.dataset.tab===tab));}
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+$('exampleList').innerHTML=examples.map((e,i)=>`<div class="example"><h3>${esc(e.title)}</h3><p>${esc(e.desc)}</p><button class="btn secondary" data-example="${i}">Probar</button></div>`).join('');
+$('exampleList').addEventListener('click',ev=>{const b=ev.target.closest('[data-example]');if(!b)return;const e=examples[Number(b.dataset.example)];switchTab(e.tab);if(e.tab==='desc'){$('data').value=e.data;$('unit').value=e.unit||'';$('kind').value=e.kind||'sample';$('calcDesc').click();}else if(e.tab==='freq'){$('freqData').value=e.data;$('calcFreq').click();}else if(e.tab==='prob'){$('probType').value=e.type;$('probType').dispatchEvent(new Event('change'));if(e.type==='basic'){$('favorable').value=e.f;$('possible').value=e.p;}else{$('xvalue').value=e.x;$('mean').value=e.mean;$('sd').value=e.sd;}$('calcProb').click();}else{$('xdata').value=e.x;$('ydata').value=e.y;$('calcReg').click();}window.scrollTo({top:0,behavior:'smooth'});});
+let currentPractice=null;
+$('newPractice').addEventListener('click',()=>{
+ const types=['media','mediana','rango','probabilidad'],type=types[Math.floor(Math.random()*types.length)];
+ if(type==='probabilidad'){const p=4+Math.floor(Math.random()*7),f=1+Math.floor(Math.random()*p);currentPractice={type,answer:f/p,f,p,question:`En un experimento con ${p} resultados igualmente probables, ${f} son favorables. ¿Cuál es la probabilidad? Responde como decimal (ej. 0.5) o porcentaje (50).`,explain:`P(A) = ${f}/${p} = ${fmt(f/p)} = ${fmt(f/p*100,2)} %.`};}
+ else{const a=Array.from({length:5},()=>1+Math.floor(Math.random()*20)),s=[...a].sort((x,y)=>x-y);let answer,explain;if(type==='media'){answer=a.reduce((x,y)=>x+y,0)/a.length;explain=`Media = (${a.join(' + ')}) / ${a.length} = ${fmt(answer)}.`;}else if(type==='mediana'){answer=median(s);explain=`Ordena los datos: ${s.join(', ')}. El valor central es ${fmt(answer)}.`;}else{answer=s[s.length-1]-s[0];explain=`Rango = máximo − mínimo = ${s[s.length-1]} − ${s[0]} = ${fmt(answer)}.`;}currentPractice={type,answer,question:`Calcula la ${type} de estos datos: ${a.join(', ')}.`,explain};}
+ $('practiceArea').innerHTML=`<p class="practice-question">${esc(currentPractice.question)}</p><div class="field"><label for="practiceAnswer">Tu respuesta</label><input id="practiceAnswer" type="number" step="any" placeholder="Escribe tu resultado"></div><div class="actions"><button class="btn" id="checkPractice">Comprobar respuesta</button><button class="btn secondary" id="showPractice">Ver explicación</button></div><div id="practiceFeedback" aria-live="polite"></div>`;
+ $('checkPractice').addEventListener('click',()=>{const raw=$('practiceAnswer').value;if(raw.trim()===''){showResult('practiceFeedback','Escribe una respuesta antes de comprobar.',true);return;}const v=Number(raw);if(!Number.isFinite(v)){showResult('practiceFeedback','La respuesta debe ser numérica.',true);return;}const alt=currentPractice.type==='probabilidad'&&v>1&&v<=100?v/100:v;const ok=Math.abs(alt-currentPractice.answer)<=Math.max(0.01,Math.abs(currentPractice.answer)*0.01);$('practiceFeedback').innerHTML=`<div class="feedback ${ok?'good':'bad'}"><b>${ok?'¡Correcto!':'Todavía no.'}</b> ${ok?'Buen trabajo.':'Revisa el procedimiento e inténtalo de nuevo.'} ${!ok?'Pista: '+esc(currentPractice.explain):esc(currentPractice.explain)}</div>`;});
+ $('showPractice').addEventListener('click',()=>showResult('practiceFeedback',`<h3>Explicación</h3><p>${esc(currentPractice.explain)}</p>`));
+});
+$('newPractice').click();
+</script>
+</body></html>
